@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP GET Request Tester with Axios</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Optional: Include custom styles -->
+    <style>
+        /* Optional custom styles */
+        .response-container {
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200 p-4">
+    <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">HTTP GET Request Tester with Axios</h1>
+        <div class="flex items-center">
+            <input type="text" id="urlInput" class="flex-1 rounded-l-md px-4 py-2 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" placeholder="Enter URL...">
+            <button id="getRequestBtn" class="rounded-r-md px-4 py-2 border border-gray-300 bg-blue-500 text-white">Get</button>
+        </div>
+        <div id="responseContainer" class="mt-4 p-4 response-container overflow-auto hidden max-h-60">
+            <!-- Response content will appear here -->
+        </div>
+    </div>
+
+    <!-- Include Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Script to handle HTTP GET request using Axios -->
+    <script>
+        document.getElementById('getRequestBtn').addEventListener('click', function() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return;
+
+            axios.get(url)
+                .then(function(response) {
+                    const statusCode = response.status;
+                    const responseData = response.data;
+                    const responseText = `<pre class="whitespace-pre-wrap">Status Code: ${statusCode}\n\n${JSON.stringify(responseData, null, 2)}</pre>`;
+                    document.getElementById('responseContainer').innerHTML = responseText;
+                    document.getElementById('responseContainer').classList.remove('hidden');
+                })
+                .catch(function(error) {
+                    const errorMessage = `Error fetching data: ${error.message}`;
+                    document.getElementById('responseContainer').innerHTML = `<pre class="whitespace-pre-wrap">${errorMessage}</pre>`;
+                    document.getElementById('responseContainer').classList.remove('hidden');
+                });
+        });
+    </script>
+</body>
+
+</html>
